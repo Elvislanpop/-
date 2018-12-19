@@ -11,12 +11,16 @@
 #import <STPopup.h>
 #import "PopViewController.h"
 @interface ViewController ()
+@property (nonatomic,strong) UILabel *label;
+
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(acceptMsg:) name:@"address" object:nil];
+    
     UIButton *button =[UIButton buttonWithType:UIButtonTypeContactAdd];
     [self.view addSubview:button];
     [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -25,8 +29,19 @@
         make.width.height.mas_equalTo(50.0);
     }];
    
-   
-    // Do any additional setup after loading the view, typically from a nib.
+    self.label = [[UILabel alloc]init];
+    self.label.textColor = [UIColor blackColor];
+    self.label.font =[UIFont systemFontOfSize:18.0];
+    [self.view addSubview:self.label];
+    
+    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+       
+        make.height.mas_equalTo(44.0);
+        make.top.equalTo(self.view).offset(100.0);
+    }];
+    
+    
 }
 -(void)buttonClick:(UIButton *)sender
 {
@@ -34,5 +49,10 @@
     VC.style = STPopupStyleBottomSheet;
     [VC presentInViewController:self completion:nil];
 }
-
+-(void)acceptMsg:(NSNotification *)sender
+{
+    if ([sender.name isEqualToString:@"address"]) {
+        self.label.text  = [sender.userInfo objectForKey:@"address"];
+    }
+}
 @end

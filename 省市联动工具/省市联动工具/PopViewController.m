@@ -15,12 +15,16 @@
 @property (nonatomic,strong) UIPickerView *pickerView;
 //原始字典/数组
 @property (nonatomic,strong) NSDictionary *dicCity;
+@property (nonatomic,strong) NSDictionary *dictArea;
 
 //数据模型数组
 @property (nonatomic,strong) NSArray *modelProvince;
 @property (nonatomic,strong) NSArray *modelCity;
 @property (nonatomic,strong) NSArray *modelArea;
-
+//选中的数据用于回调
+@property (nonatomic,strong) NSString *selectProvince;
+@property (nonatomic,strong) NSString *selectCity;
+@property (nonatomic,strong) NSString *selectArea;
 
 @end
 
@@ -40,8 +44,9 @@
     NSError *error;
     self.view.backgroundColor =[UIColor whiteColor];
     self.contentSizeInPopup = CGSizeMake(self.view.frame.size.width, 250);
-    self.title =@"省";
+    self.title =@"省市区选择";
     [self.view addSubview:self.pickerView];
+    self.navigationItem.rightBarButtonItem =[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(DoneClick:)];
     
     //省区
     NSString *fileProvince =[[NSBundle mainBundle] pathForResource:@"province" ofType:@"json"];
@@ -53,24 +58,20 @@
     NSString *fileCity =[[NSBundle mainBundle] pathForResource:@"city" ofType:@"json"];
     NSData *dataCity =[NSData dataWithContentsOfFile:fileCity];
     self.dicCity =[NSJSONSerialization JSONObjectWithData:dataCity options:kNilOptions error:&error];
-    for (int i  = 0; i < self.modelProvince.count; i++) {
-        DataModel *model = self.modelProvince[i];
-        NSArray *ArrayCity = [self.dicCity objectForKey:[NSString stringWithFormat:@"%lu",model.id]];
-        self.modelCity =[DataModel mj_objectArrayWithKeyValuesArray:ArrayCity];
-        
-    }
+    
     
     
     //区
     NSString *fileArea =[[NSBundle mainBundle] pathForResource:@"area" ofType:@"json"];
     NSData *dataArea =[NSData dataWithContentsOfFile:fileArea];
-    NSArray  *arrayArea =[NSJSONSerialization JSONObjectWithData:dataArea options:kNilOptions error:&error];
-    self.modelArea = [DataModel mj_objectArrayWithKeyValuesArray:arrayArea];
+    self.dictArea =[NSJSONSerialization JSONObjectWithData:dataArea options:kNilOptions error:&error];
+    
+    [self pickerView:self.pickerView didSelectRow:0 inComponent:0];
 }
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    return 2;
+    return 3;
 }
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
@@ -80,11 +81,10 @@
            
         case 1:
         {
-            DataModel *modelProvince = self.modelProvince[3];
-            NSArray *ArrayCity = [self.dicCity objectForKey:[NSString stringWithFormat:@"%lu",modelProvince.id]];
-            self.modelCity =[DataModel mj_objectArrayWithKeyValuesArray:ArrayCity];
             return self.modelCity.count;
         }
+        case 2:
+            return self.modelArea.count;
         default:
             return 0;
     }
@@ -101,11 +101,14 @@
         }
         case 1:
         {
-            
-            
             DataModel *modelCity = self.modelCity[row];
            
             return modelCity.name;
+        }
+        case 2:
+        {
+            DataModel *modelArea = self.modelArea[row];
+            return modelArea.name;
         }
         default:
             return @"";
@@ -123,9 +126,82 @@
 }
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    //当选中的时候取出这一行的View， 使用这个方法的前提必须Item 为自定义的Label；
-    UILabel *label =  [self.pickerView viewForRow:row forComponent:component];
-    label.textColor = [UIColor redColor];
+    switch (component) {
+        case 0:
+        {
+            DataModel *modelProvince = self.modelProvince[row];
+            NSArray *ArrayCity = [self.dicCity objectForKey:[NSString stringWithFormat:@"%lu",modelProvince.id]];
+            self.modelCity =[DataModel mj_objectArrayWithKeyValuesArray:ArrayCity];
+           
+           [self.pickerView reloadComponent:1];
+           [self.pickerView selectRow:0 inComponent:1 animated:YES];
+           [self pickerView:self.pickerView didSelectRow:0 inComponent:1];
+          
+           
+        }
+            break;
+        case 1:
+        {
+            DataModel *modelCity =self.modelCity[row];
+            NSArray *ArrayArea =[self.dictArea objectForKey:[NSString stringWithFormat:@"%lu",modelCity.id]];
+            self.modelArea =[DataModel mj_objectArrayWithKeyValuesArray:ArrayArea];
+            
+            //刷新后一列的数据源
+            [self.pickerView reloadComponent:2];
+            //保持数据刷新的时候后一列从头开始
+            [self.pickerView selectRow:0 inComponent:2 animated:YES];
+            //保持联动
+            [self pickerView:self.pickerView didSelectRow:0 inComponent:2];
+            
+        }
+            break;
+        case 2:
+        {
+          
+        }
+            break;
+        default:
+            break;
+    }
+    [self selectedPickerViewRow:row InComponent:component];
+   
 
+}
+-(void)selectedPickerViewRow:(NSInteger)row InComponent:(NSInteger)Component
+{
+    
+    switch (Component) {
+        case 0:
+            {
+                DataModel *model = self.modelProvince[row];
+                self.selectProvince =  model.name;
+            }
+            break;
+        case 1:
+        {
+            DataModel *model = self.modelCity[row];
+            self.selectCity = model.name;
+        }
+            break;
+        case 2:
+        {
+            DataModel *model = self.modelArea[row];
+            self.selectArea = model.name;
+        }
+            break;
+        default:
+            break;
+    }
+   
+    
+    
+}
+
+-(void)DoneClick:(UIBarButtonItem *)sender
+{
+    self.selectedValue = [NSString stringWithFormat:@"%@     %@   %@",self.selectProvince,self.selectCity,self.selectArea];
+    NSLog(@"%@",self.selectedValue);
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"address" object:nil userInfo:@{@"address":self.selectedValue}];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

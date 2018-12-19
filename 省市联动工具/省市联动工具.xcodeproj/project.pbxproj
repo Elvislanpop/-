@@ -14,10 +14,10 @@
 		8097B4BD21C7548B00F43D8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4BB21C7548B00F43D8C /* LaunchScreen.storyboard */; };
 		8097B4C021C7548B00F43D8C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8097B4BF21C7548B00F43D8C /* main.m */; };
 		8097B4C821C756AF00F43D8C /* PopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8097B4C721C756AF00F43D8C /* PopViewController.m */; };
-		8097B4CA21C775DF00F43D8C /* province.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4C921C775DE00F43D8C /* province.json */; };
-		8097B4D921C8E13700F43D8C /* area.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4D721C8E13700F43D8C /* area.json */; };
-		8097B4DA21C8E13700F43D8C /* city.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4D821C8E13700F43D8C /* city.json */; };
 		8097B4DD21C8E46500F43D8C /* DataModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8097B4DC21C8E46500F43D8C /* DataModel.m */; };
+		8097B4E121C9E48300F43D8C /* area.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4DE21C9E48300F43D8C /* area.json */; };
+		8097B4E221C9E48300F43D8C /* province.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4DF21C9E48300F43D8C /* province.json */; };
+		8097B4E321C9E48300F43D8C /* city.json in Resources */ = {isa = PBXBuildFile; fileRef = 8097B4E021C9E48300F43D8C /* city.json */; };
 		F1DDE16583E85F5892E7F525 /* libPods-省市联动工具.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F92D01E277017A498342729 /* libPods-省市联动工具.a */; };
 /* End PBXBuildFile section */
 
@@ -36,11 +36,11 @@
 		8097B4BF21C7548B00F43D8C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		8097B4C621C756AF00F43D8C /* PopViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PopViewController.h; sourceTree = "<group>"; };
 		8097B4C721C756AF00F43D8C /* PopViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PopViewController.m; sourceTree = "<group>"; };
-		8097B4C921C775DE00F43D8C /* province.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = province.json; path = "../../../Downloads/china_regions-master/json/province.json"; sourceTree = "<group>"; };
-		8097B4D721C8E13700F43D8C /* area.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = area.json; path = "../../../Downloads/china_regions-master/json/area.json"; sourceTree = "<group>"; };
-		8097B4D821C8E13700F43D8C /* city.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = city.json; path = "../../../Downloads/china_regions-master/json/city.json"; sourceTree = "<group>"; };
 		8097B4DB21C8E46500F43D8C /* DataModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataModel.h; sourceTree = "<group>"; };
 		8097B4DC21C8E46500F43D8C /* DataModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataModel.m; sourceTree = "<group>"; };
+		8097B4DE21C9E48300F43D8C /* area.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = area.json; sourceTree = "<group>"; };
+		8097B4DF21C9E48300F43D8C /* province.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = province.json; sourceTree = "<group>"; };
+		8097B4E021C9E48300F43D8C /* city.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = city.json; sourceTree = "<group>"; };
 		9F92D01E277017A498342729 /* libPods-省市联动工具.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-省市联动工具.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -97,10 +97,10 @@
 				8097B4B921C7548B00F43D8C /* Assets.xcassets */,
 				8097B4BB21C7548B00F43D8C /* LaunchScreen.storyboard */,
 				8097B4BE21C7548B00F43D8C /* Info.plist */,
-				8097B4C921C775DE00F43D8C /* province.json */,
-				8097B4D721C8E13700F43D8C /* area.json */,
-				8097B4D821C8E13700F43D8C /* city.json */,
 				8097B4BF21C7548B00F43D8C /* main.m */,
+				8097B4DE21C9E48300F43D8C /* area.json */,
+				8097B4E021C9E48300F43D8C /* city.json */,
+				8097B4DF21C9E48300F43D8C /* province.json */,
 			);
 			path = "省市联动工具";
 			sourceTree = "<group>";
@@ -172,12 +172,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8097B4DA21C8E13700F43D8C /* city.json in Resources */,
+				8097B4E321C9E48300F43D8C /* city.json in Resources */,
 				8097B4BD21C7548B00F43D8C /* LaunchScreen.storyboard in Resources */,
 				8097B4BA21C7548B00F43D8C /* Assets.xcassets in Resources */,
-				8097B4D921C8E13700F43D8C /* area.json in Resources */,
+				8097B4E221C9E48300F43D8C /* province.json in Resources */,
+				8097B4E121C9E48300F43D8C /* area.json in Resources */,
 				8097B4B821C7548A00F43D8C /* Main.storyboard in Resources */,
-				8097B4CA21C775DF00F43D8C /* province.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
